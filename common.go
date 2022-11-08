@@ -7,6 +7,9 @@ import (
 )
 
 func generate(len int) string {
+	if len == 0 {
+		return ""
+	}
 	str := strings.Builder{}
 	for i := 0; i < len; i++ {
 		str.WriteString("*")

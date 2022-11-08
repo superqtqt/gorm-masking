@@ -34,10 +34,7 @@ type DataMasking interface {
 
 // plugin has implemented plugin type
 const (
-	Phone        MaskingType = "phone"
-	ChineseName  MaskingType = "chinese_name"
-	IdentifyCard MaskingType = "identify_card"
-	Common       MaskingType = "common"
+	Common MaskingType = "common"
 )
 
 // system const value
@@ -91,7 +88,7 @@ func (m *Masking) Name() string {
 
 func (m *Masking) Initialize(db *gorm.DB) error {
 	typeOptions = make(map[MaskingType]DataMasking)
-	RegisterTypeOptions(ChineseName, NewChineseMasking(m.config.Key, 1))
+	RegisterTypeOptions(Common, NewChineseMasking(m.config.Key, float32(0.5), Middle))
 
 	db.Callback().Create().Before("gorm:create").Register("update_created_at", CreateMasking)
 	db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", UpdateMasking)
@@ -104,7 +101,7 @@ func CreateMasking(db *gorm.DB) {
 	if v, ok := db.Statement.ReflectValue.Type().(DataStore); ok {
 		storeFunc = v
 	} else {
-		storeFunc = &SimpleTableDataStore{}
+		storeFunc = &SameTableDataStore{}
 	}
 	fieldName := db.Statement.Schema.FieldsByName
 	for k, _ := range fieldName {
@@ -150,7 +147,7 @@ func UpdateMasking(db *gorm.DB) {
 	if v, ok := db.Statement.ReflectValue.Type().(DataStore); ok {
 		storeFunc = v
 	} else {
-		storeFunc = &SimpleTableDataStore{}
+		storeFunc = &SameTableDataStore{}
 	}
 	if updateInfo, ok := db.Statement.Dest.(map[string]interface{}); ok {
 		for updateColumn := range updateInfo {

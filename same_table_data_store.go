@@ -7,10 +7,10 @@ import (
 	"reflect"
 )
 
-type SimpleTableDataStore struct {
+type SameTableDataStore struct {
 }
 
-func (o *SimpleTableDataStore) Update(field *schema.Field, desensitizationValue, encryptionValue string, actualValue interface{}, desensitizationType MaskingType, db *gorm.DB) error {
+func (o *SameTableDataStore) Update(field *schema.Field, desensitizationValue, encryptionValue string, actualValue interface{}, desensitizationType MaskingType, db *gorm.DB) error {
 	v, ok := field.Tag.Lookup(MaskingEncryptColumnTag)
 	if !ok {
 		return errors.New("未配置tag:" + MaskingEncryptColumnTag)
@@ -31,7 +31,7 @@ func (o *SimpleTableDataStore) Update(field *schema.Field, desensitizationValue,
 	}
 }
 
-func (o *SimpleTableDataStore) Create(field *schema.Field, vv reflect.Value, desensitizationValue, encryptionValue string, actualValue interface{}, desensitizationType MaskingType,
+func (o *SameTableDataStore) Create(field *schema.Field, vv reflect.Value, desensitizationValue, encryptionValue string, actualValue interface{}, desensitizationType MaskingType,
 	db *gorm.DB) error {
 	v, ok := field.Tag.Lookup(MaskingEncryptColumnTag)
 	if !ok {
