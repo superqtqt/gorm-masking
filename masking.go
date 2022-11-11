@@ -59,6 +59,7 @@ func GetTypeOption(maskingType MaskingType) DataMasking {
 }
 
 type Config struct {
+	// encryption and decryption data key
 	Key      string
 	VisitLog VisitLog
 }
@@ -68,7 +69,7 @@ func New(config *Config) *Masking {
 		panic("config is nil")
 	}
 	if len(config.Key) == 0 {
-		panic("config key is nil")
+		panic("lost required config key")
 	}
 	if config.VisitLog == nil {
 		visitLog = &NonVisitLog{}
