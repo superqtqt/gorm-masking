@@ -211,7 +211,7 @@ func QueryMasking(db *gorm.DB) {
 				if refVal.Len() >= 1 {
 					for i := 0; i < refVal.Len(); i++ {
 						curVal := refVal.Index(i)
-						if curVal.Kind() == reflect.Pointer {
+						if curVal.Kind() == reflect.Ptr {
 							curVal = curVal.Elem()
 						}
 						for j := range columns {
